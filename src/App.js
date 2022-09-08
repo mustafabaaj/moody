@@ -1,39 +1,47 @@
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-} from "./features/counter/counterSlice";
 import { useState } from "react";
+import { getAccessToken } from "./api/getAccessToken";
+import {
+  isAuthenticated,
+  isNotAuthenticated,
+} from "./features/auth/tokenSlice";
+import { useGetSpotifyProfileQuery } from "./api/spotifyService";
 
 function App() {
-  const counter = useSelector((state) => state.counter);
+  const isAuth = useSelector((state) => state.getToken);
   const dispatch = useDispatch();
+  const { data, error, isLoading } = useGetSpotifyProfileQuery();
+  console.log(data);
 
-  const [incrementAmount, setIncrementAmount] = useState("2");
-
+  const loginHandler = () => {
+    const isLoggedIn = getAccessToken();
+    if (isLoggedIn) {
+      console.log(isLoggedIn, "user Logged in");
+      dispatch(isAuthenticated());
+    } else {
+      console.log(isLoggedIn, "user not Logged in");
+      dispatch(isNotAuthenticated());
+    }
+  };
+  // Spotify api that query the profile + get the access token from local storage
+  // Check if token is expeired and open the new window if we don't have a access token
   return (
-    <div className="App">
-      <h1>
-        <button onClick={() => dispatch(decrement())}> Decrement </button>
-
-        {counter.value}
-
-        <button onClick={() => dispatch(increment())}>Increment</button>
-      </h1>
-      <input
-        value={incrementAmount}
-        onChange={(e) => setIncrementAmount(e.target.value)}
-      />
-      <button
-        onClick={() =>
-          dispatch(incrementByAmount(Number(incrementAmount) || 0))
-        }
-      >
-        Add Amount
-      </button>
-    </div>
+    <section className="posts-list">
+      {isAuth.isAuth && (
+        <div>
+          <h1>Welcome {data.display_name} </h1>
+          <span>Origin Country: {data.country}</span><br />
+          <span>Email: {data.email}</span><br />
+          <span>Number Of followers {data.followers.total}</span><br />
+          <span>Spotify Profile {data.external_urls.spotify}</span><br />
+        </div>
+      )}
+      {!isAuth.isAuth && <h1>User is Not Authenicated</h1>}
+      {!isAuth.isAuth && (
+        <button onClick={loginHandler}>Log in with Spotify</button>
+      )}
+    </section>
   );
 }
 

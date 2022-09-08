@@ -1,10 +1,15 @@
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "../features/counter/counterSlice";
+import { spotifyAPIs } from "../api/spotifyService";
+import getAccessTokenSlice from "../features/auth/tokenSlice";
 
 const reducer = combineReducers({
-  counter: counterSlice,
+  [spotifyAPIs.reducerPath]: spotifyAPIs.reducer,
+
+  getToken: getAccessTokenSlice,
 });
-const store = configureStore({ reducer });
+const store = configureStore({
+  reducer,
+});
 
 export default store;

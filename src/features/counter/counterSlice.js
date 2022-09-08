@@ -1,23 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from '@reduxjs/toolkit';
+// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const initialState = { value: 0 };
+// export const getAccessTokenSlice = createSlice({
+//     name: 'getAccessToken',
+//     initialState,
+//     reducers: {
+//         increment(state) {
+//             state.value++;
+//         },
+//         decrement(state) {
+//             state.value--;
+//         },
+//         incrementByAmount(state, action) {
+//             state.value += action.payload;
+//         },
+//     },
+// });
 
-export const counterSlice = createSlice({
-  name: "counter",
-  initialState,
-  reducers: {
-    increment(state) {
-      state.value++;
-    },
-    decrement(state) {
-      state.value--;
-    },
-    incrementByAmount(state, action) {
-      state.value += action.payload;
-    },
-  },
-});
+// export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-
-export default counterSlice.reducer;
+// export default counterSlice.reducer;
